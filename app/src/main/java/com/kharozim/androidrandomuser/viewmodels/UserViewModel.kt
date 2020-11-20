@@ -12,14 +12,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserViewModel(val context: Context?) : ViewModel() {
+class UserViewModel(val context: Context) : ViewModel() {
     val _users: MutableLiveData<List<UserModel>> by lazy { MutableLiveData<List<UserModel>>() }
 
-    val users : LiveData<List<UserModel>>
-    get() = _users
+    val users: LiveData<List<UserModel>>
+        get() = _users
 
 
-    fun setAlluser(){
+    fun setAlluser() {
         ApiClient.userService.getAllUser().enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {

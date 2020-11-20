@@ -16,7 +16,7 @@ import com.kharozim.androidrandomuser.viewmodels.UserViewModelFactory
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
-    private val adapter by lazy { context?.let { UserAdapter(it) } }
+    private val adapter by lazy { UserAdapter(requireContext()) }
     private lateinit var userViewModel: UserViewModel
 
     override fun onCreateView(
@@ -45,7 +45,7 @@ class MainFragment : Fragment() {
     }
 
     private fun setViewModel() {
-        userViewModel = ViewModelProviders.of(this, UserViewModelFactory(this.context))
+        userViewModel = ViewModelProviders.of(this, UserViewModelFactory(requireContext()))
             .get(UserViewModel::class.java)
     }
 }

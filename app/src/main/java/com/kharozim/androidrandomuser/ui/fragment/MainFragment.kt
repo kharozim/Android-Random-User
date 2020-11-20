@@ -31,7 +31,6 @@ class MainFragment : Fragment() {
         binding.rvFragmentMain.adapter = adapter
         return binding.root
 
-
     }
 
     private fun setObserver() {

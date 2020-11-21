@@ -2,7 +2,6 @@ package com.kharozim.androidrandomuser
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -19,7 +18,6 @@ object ApiClient {
     private val retrofit : Retrofit by lazy {
         Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create(gson)).client(client).build()
     }
-
 
 val userService : UserService by lazy {
     retrofit.create(UserService::class.java)

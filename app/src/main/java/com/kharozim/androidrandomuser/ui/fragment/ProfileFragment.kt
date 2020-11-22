@@ -18,7 +18,6 @@ class ProfileFragment : Fragment() {
         binding = FragmentProfileBinding.inflate(inflater, container, false).apply {
 
 
-
         }
         return binding.root
     }

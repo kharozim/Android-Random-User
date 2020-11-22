@@ -9,15 +9,16 @@ import com.kharozim.androidrandomuser.databinding.ItemUserBinding
 import com.kharozim.androidrandomuser.databinding.ItemUserCategoryBinding
 import com.kharozim.androidrandomuser.models.UserModel
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 sealed class User {
-    data class Header(val category : String) : User()
+    data class Header(val category: String) : User()
     data class Row(val item: UserModel) : User()
 }
 
 class UserAdapter(
-   private val context: Context,
+    private val context: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var lists = mutableListOf<User>()
@@ -26,16 +27,21 @@ class UserAdapter(
         notifyDataSetChanged()
     }
 
+    fun removeAt(position: Int) {
+        this.lists.removeAt(position)
+        notifyItemRemoved(position)
+    }
 
     private val header = 0
     private val row = 1
 
     inner class RowViewHolder(
-         val binding: ItemUserBinding
+        val binding: ItemUserBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bindData(userModel: UserModel) {
             binding.run {
-                tvName.text = userModel.name.title+" "+userModel.name.first+" "+userModel.name.last
+                tvName.text =
+                    userModel.name.title + " " + userModel.name.first + " " + userModel.name.last
                 tvEmail.text = userModel.email
                 tvPhone.text = userModel.phone
                 Glide.with(root).load(userModel.picture.medium).circleCrop().into(ivImage)
@@ -46,7 +52,7 @@ class UserAdapter(
     }
 
     inner class HeaderViewHolder(
-         val binding: ItemUserCategoryBinding
+        val binding: ItemUserCategoryBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bindData(category: String) {
             binding.tvCategory.text = category.toUpperCase(Locale.getDefault())
@@ -55,8 +61,8 @@ class UserAdapter(
 
     override fun getItemViewType(position: Int): Int = when (lists[position]) {
 
-            is User.Header -> header
-            is User.Row -> row
+        is User.Header -> header
+        is User.Row -> row
 
         else -> throw IllegalArgumentException("Unsupported view type")
     }
@@ -78,11 +84,22 @@ class UserAdapter(
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-       val user = lists[position]
-        if ( user is User.Row && holder is RowViewHolder){
+        val user = lists[position]
+        if (user is User.Row && holder is RowViewHolder) {
             holder.bindData(user.item)    // use view binding
-        } else if (user is User.Header && holder is HeaderViewHolder){
+        } else if (user is User.Header && holder is HeaderViewHolder) {
             holder.bindData(user.category) // use view binding
         }
+    }
+
+    fun getData(position: Int): User {
+        return lists[position]
+    }
+
+    fun restoreItem(item: User, position: Int) {
+        val arrayList = ArrayList(lists)
+        arrayList.add(position, item)
+        lists = arrayList
+        notifyItemInserted(position)
     }
 }
